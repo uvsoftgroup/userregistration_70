@@ -1,0 +1,41 @@
+version: "3"
+services:
+  dbuserregistrationflyway:
+    image: postgres:${APP_DB_POSTGRESIMAGEVERSION}
+    env_file:
+      - .env
+    networks:
+      - db_network
+    container_name: dbuserregistrationflyway
+    volumes:
+      - postgres-data-flyway:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=${APP_DB_PASSWORD} # Set environment variables in containers
+      - POSTGRES_USER=${APP_DB_USERNAME} # Set environment variables in containers
+      #- POSTGRES_DB=userregistration_flyway_db
+  # Spring Boot User Registration REST API application
+  userregistration:
+    container_name: userregistrationflyway
+    image: userregistration:${APP_VERSION} # Set environment variables in containers
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_NO: ${APP_BUILD_NO} # Set environment variables in containers
+      labels:
+        com.uvsoftgroup.userregistration: "User Registration REST APIs"
+        database.migration.flyway: "Database Migrations done by Flyway"
+    ports:
+      - "3031:3030"
+    networks:
+      - db_network
+    depends_on:
+      - dbuserregistrationflyway
+    links:
+      - dbuserregistrationflyway
+volumes:
+  postgres-data-flyway:
+networks:
+  db_network:

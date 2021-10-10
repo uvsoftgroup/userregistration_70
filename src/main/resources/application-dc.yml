@@ -1,0 +1,88 @@
+springdoc:
+  swagger-ui:
+   enabled: true
+application:
+  description: User Registration REST APIs for Online registration
+  version: 1.2.5
+server:
+  #address: localhost
+  port: 3030
+  #servlet:
+    #context-path: /userregistration
+spring:
+    profiles:
+      active: dev
+    application:
+        name: userregistration
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        initialize: true
+        password: admin
+        url: jdbc:postgresql://localhost:5432/userregistration_flyway_db
+        username: postgres
+        platform: postgres
+        #initialization-mode: always
+    jpa:
+        database: POSTGRESQL
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                jdbc:
+                    lob:
+                        non_contextual_creation: true
+        show-sql: true
+---
+server:
+ # address: xx.xx.xx.xx
+ # port: yyyy
+  context-path: /userregistration
+spring:
+  profiles: prod
+  application:
+        name: userregistration
+  datasource:
+        driver-class-name: org.postgresql.Driver
+        initialize: true
+        password: uvsoftgroup01
+        platform: postgres
+        url: jdbc:postgresql://xxx.xx.xx.xx:5432/uvsoftgroup01
+        username: postgres
+  jpa:
+        database: POSTGRESQL
+        hibernate:
+            ddl-auto: update # JPA with Hibernate crate, update the database schema
+        properties:
+            hibernate:
+                jdbc:
+                    lob:
+                        non_contextual_creation: true
+        show-sql: true
+---
+server:
+# address: xx.xx.xx.xx
+# port: yyyy
+  context-path: /userregistration
+spring:
+  profiles: test
+  application:
+        name: userregistration
+  datasource:
+        driver-class-name: org.postgresql.Driver
+        initialize: true
+        password: uvsoftgroup02
+        platform: postgres
+        url: jdbc:postgresql://xxx.xx.xx.xx:5432/uvsoftgroup02
+        username: postgres
+  jpa:
+        database: POSTGRESQL
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                jdbc:
+                    lob:
+                        non_contextual_creation: true
+        show-sql: true
+
+   
